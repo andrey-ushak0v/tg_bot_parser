@@ -27,6 +27,9 @@ async def main_func(link):
     channel = await client.get_entity(entity)
     all_posts = await client.get_messages(channel, limit=LIMIT)
 
+    if not all_posts:
+        return 'в канале пусто'
+
     p_list = ''
     p_list += f'{channel.title}\n\n'
 
