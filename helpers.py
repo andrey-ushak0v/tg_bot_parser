@@ -1,5 +1,10 @@
-import pymorphy2
 import re
+
+import matplotlib.pyplot as plt
+import matplotlib
+import numpy as np
+import pymorphy2
+from telethon.tl.types import PeerChannel
 
 
 def get_first_sentence(text):
@@ -28,3 +33,20 @@ def get_first_verb(text):
 def check_link(link):
     pattern = r'(https?://(?:www\.)?t\.me/[^\s]+)'
     return re.search(pattern, link)
+
+
+def save_figure(x, y, chanel_name):
+    x = np.array(x)
+    y = np.array(y)
+    matplotlib.rcParams['font.family'] = 'monospace'
+    plt.title(f'статистика по {chanel_name}')
+    plt.xlabel('посты')
+    plt.ylabel('максимальное кол-во реакции на пост')
+    plt.plot(x, y, marker='o')
+    plt.savefig('saved_figure.png')
+
+
+def check_is_dight(link):
+    if link.isdigit():
+        return PeerChannel(int(link))
+    return link

@@ -17,7 +17,13 @@ async def send_welcome(message: types.Message):
 async def send_posts(message: types.Message):
     if check_link(message.text):
         send_to_user = await main_func(message.text)
-        await message.answer(text=send_to_user, parse_mode='HTML')
+        ph = open('saved_figure.png', 'rb')
+        await bot.send_photo(
+            message.chat.id,
+            photo=ph,
+            caption=send_to_user,
+            parse_mode='HTML'
+                )
 
 
 if __name__ == '__main__':
