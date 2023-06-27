@@ -1,30 +1,32 @@
-from aiogram import Bot, Dispatcher, executor, types
-
+#from aiogram import Bot, Dispatcher, executor, types
+from telethon.sync import TelegramClient, events
 import config
 from helpers import check_link
-from parse_channel import main_func
-
-bot = Bot(token=config.TOKEN)
-dp = Dispatcher(bot)
+from parse_channel import GetPosts
 
 
-@dp.message_handler(commands=['start'])
-async def send_welcome(message: types.Message):
-    await message.answer('дай ссылку')
+class Bot:
+    def __init__(self, api_id, api_hash, bot_token):
+        self.client = TelegramClient(
+            'bot_send_msg', api_id, api_hash).start(bot_token=config.TOKEN)
+
+        self.bridge = None
+
+    async def start(self):
+        await self.client.run_until_disconnected()
+
+    async def start_handlers(self):
+        self.client.add_event_handler(
+            self.handle_start,
+            events.NewMessage(pattern='/start')
+            )
+
+    async def send_posts(self, event):
+        user_id = event.sender_id
+        if check_link(event.raw_txt):
+            send_to_user = await GetPosts.get_posts(event.raw_txt)
+            ph = open('saved_figure.png', 'rb')
+            await self.client.send_message(user_id, ph, send_to_user, parse_mode='HTML')
 
 
-@dp.message_handler()
-async def send_posts(message: types.Message):
-    if check_link(message.text):
-        send_to_user = await main_func(message.text)
-        ph = open('saved_figure.png', 'rb')
-        await bot.send_photo(
-            message.chat.id,
-            photo=ph,
-            caption=send_to_user,
-            parse_mode='HTML'
-                )
 
-
-if __name__ == '__main__':
-    executor.start_polling(dp)

@@ -38,7 +38,8 @@ def check_link(link):
 def save_figure(x, y, chanel_name):
     x = np.array(x)
     y = np.array(y)
-    matplotlib.rcParams['font.family'] = 'monospace'
+    matplotlib.rc('font', family='Arial')
+    #matplotlib.rcParams['font.family'] = 'monospace'
     plt.title(f'статистика по {chanel_name}')
     plt.xlabel('посты')
     plt.ylabel('максимальное кол-во реакции на пост')
