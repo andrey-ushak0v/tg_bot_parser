@@ -22,3 +22,5 @@ pytz==2023.3
 rsa==4.9
 Telethon==1.28.5
 yarl==1.9.2
+matplotlib==3.7.1
+

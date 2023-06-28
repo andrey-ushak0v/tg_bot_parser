@@ -17,9 +17,9 @@ class DigestApp:
         phone_bot = config.phone_bot
 
         self.bot = Bot(
-            api_id, api_hash, phone_bot)
-        self.get_posts = GetPosts(
             api_id, api_hash, bot_token)
+        self.get_posts = GetPosts(
+            api_id, api_hash, phone_bot)
 
         # nltk.download('averaged_perceptron_tagger')
 
