@@ -11,12 +11,15 @@ from helpers import (check_is_dight,
 
 class GetPosts:
     def __init__(self, api_id, api_hash, phone_number):
-        self.client = TelegramClient('bot', api_id, api_hash)
+        self.client = TelegramClient('bot', api_id, api_hash, system_version="4.16.30-vxCUSTOM")
         self.phone_number = phone_number
         self.bridge = None
 
     async def start(self):
+        
         await self.client.connect()
+        await self.client.send_code_request(self.phone_number)
+
         await self.client.run_until_disconnected()
 
     async def get_posts(self, link):

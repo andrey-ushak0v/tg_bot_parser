@@ -21,6 +21,9 @@ class Bot:
             events.NewMessage(pattern='/start')
             )
 
+    async def handle_start(self, event):
+       await self.client.send_message(event.sender_id, message='qq')
+
     async def send_posts(self, event):
         user_id = event.sender_id
         if check_link(event.raw_txt):
