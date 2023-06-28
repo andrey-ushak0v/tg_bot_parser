@@ -1,5 +1,6 @@
 from aiogram.utils.markdown import hlink
 from telethon.sync import TelegramClient
+import asyncio
 
 #from config import API_HASH, API_ID
 from helpers import (check_is_dight,
@@ -18,10 +19,15 @@ class GetPosts:
     async def start(self):
         
         await self.client.connect()
-        await self.client.send_code_request(self.phone_number)
+        if not await self.client.is_user_authorized():
+            await self.client.send_code_request(self.phone_number)
+            code = input('Введите код')
+            await self.client.sign_in(self.phone_number, int(code))
 
         await self.client.run_until_disconnected()
 
+
+    
     async def get_posts(self, link):
         entity = check_is_dight(link)
         channel = await self.client.get_entity(entity)
